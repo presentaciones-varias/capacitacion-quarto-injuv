@@ -1,0 +1,36 @@
+
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{etoolbox}
+
+% Redefinir el estilo del título de cada frame
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\paperwidth,ht=0cm,dp=0cm]{frametitle}
+    \begin{tikzpicture}[remember picture,overlay]
+      % Imagen de fondo como barra (ajusta la ruta y tamaño)
+      \node[anchor=north west, inner sep=0] at (0,0) {\includegraphics[width=\paperwidth,height=2cm]{images/fondo2.png}};
+      % Texto del título encima de la imagen
+      \node[anchor=west, xshift=0.2cm, yshift=-0.5cm, text=white, font=\large\bfseries] at (0,0) {\insertframetitle};
+    \end{tikzpicture}
+  \end{beamercolorbox}
+  \vspace*{0.5cm} 
+}
+
+
+\newcommand{\CodeSize}{\tiny} % clase para modificar el tamaño del codigo
+% puede ser \tiny, \footnotesize, \huge, etc.
+
+\AtBeginEnvironment{Highlighting}{\CodeSize} % Cada vez que comience un bloque Highlighting, aplica el tamaño definido
+
+\AtBeginEnvironment{verbatim}{\CodeSize}     % Cuando R imprime una tabla, un error o un texto plano, eso no va en Highlighting sino en verbatim
+
+\makeatletter
+\@ifpackageloaded{listings}{                % Si el template cargara el paquete listings, se usa lstlisting en vez de Highlighting
+  \lstset{basicstyle=\ttfamily\CodeSize, breaklines=true, columns=fullflexible, keepspaces=true}
+}{}
+
+\@ifpackageloaded{minted}{                  % otro backend para resaltar código
+  \setminted{fontsize=\CodeSize, breaklines, autogobble}%
+}{}
+\makeatother

@@ -1,0 +1,55 @@
+---
+title: "Documento Beamer"
+subtitle: "Ejemplo de documento generado en quarto"
+author: "Capacitación presentaciones quarto"
+date: today
+format:
+  beamer:
+    code-line-numbers: true
+    include-in-header: styles/template.tex
+    code-overflow: wrap
+    # keep-tex: true
+---
+
+
+
+## Capitulo 1 | Sección 1
+
+
+```{r}
+#| eval: true
+#| echo: true
+#| message: false
+#| warning: false
+
+library(tidyverse)
+library(ggplot2)
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+```
+
+
+
+## Capitulo 1 | Sección 1
+
+```{r}
+#| echo: false
+#| message: false
+
+ggplot(airquality, aes(temp_celsius, Ozone)) +
+  geom_point() + 
+  geom_smooth(method = "loess")
+
+
+```
+
+## Capítulo 1 | Sección 2
+
+![Un elefante](images/elephant.png){fig-alt="Un elefante."}
+
+

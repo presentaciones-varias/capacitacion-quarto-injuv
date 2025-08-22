@@ -1,0 +1,1470 @@
+---
+# title: ""
+# author: ""
+format:
+  revealjs:
+    output-file: "index.html"
+    auto-stretch: false
+    margin: 0
+    slide-number: true
+    scrollable: true
+    preview-links: auto
+    logo: images/logo_portada2.png
+    css: ine_quarto_styles.css
+    mermaid-format: svg
+    view-distance: 50
+    # footer: https://quarto.org
+code-annotations: below
+---
+
+# 
+
+<img src="images/logo_portada2.png" width="20%"/>
+
+[**Capacitación Quarto**]{.big-par .center-justified}
+
+[**Área de Ciencia de Datos**]{.big-par .center-justified}
+
+[**Unidad de Gobierno de Datos**]{.small-par.center-justified}
+
+[**Agosto 2025**]{.big-par .center-justified}
+
+## Contenidos
+::: {.incremental .medium-par}
+
+- Introducción 
+  - ¿Qué es quarto?
+  - Diferencias con R Markdown
+  
+- Documentos Quarto
+
+- Markdown Quarto básico
+
+- Elementos base
+  - Figuras, Tablas y Diagramas
+  - Bloques de código: R
+
+- Comparación formatos presentaciones
+
+- Embeds
+
+- Dashboards
+
+- Extra
+
+:::
+
+
+
+## Introducción (1/2)
+
+::: {.incremental .medium-par}
+- Quarto es una herramienta de código abierto que usa una variación específica de markdown ([Pandoc](https://pandoc.org)) para la publicación de documentos.
+
+- El objetivo de quarto es mejorar el proceso de creación y colaboración en documentos científicos y técnicos.
+
+  - Para ello, quarto combina en un único sistema consistente la funcionalidad de R Markdown, bookdown, distill, xaringan, etc.
+  
+:::
+
+
+## Introducción (2/2)
+
+
+[<img src="images/logo_quarto_rmarkdown.png" width="30%"/>]{.center}
+
+[¿R Markdown o quarto?]{.center}
+
+. . .
+
+::: {.incremental .medium-par}
+
+- R Markdown está fundamentalmente atado a R. 
+
+- Quarto no requiere R y fue desarrollado para ser multi-lenguaje, comenzando con *R*, *Python*, *Javascript* y *Julia*, con la idea de que funcionara incluso con lenguajes que aún no existen.
+
+- Aún así, quarto es altamente compatible con R Markdown, lo que permite que podamos **renderizar** la mayoría de documentos escritos usando R Markdown. 
+
+:::
+
+## Documentos Quarto (1/4)
+
+::: {.incremental .medium-par}
+- Quarto soporta una gran cantidad de formatos de salida.
+
+- En esta sesión examinaremos sólo algunos de los más comunes:
+
+    - HTML: lenguaje de marcado de hipertexto usado para estructurar y presentar contenido en la web.
+    - PDF: formato para crear documentos paginados listos para imprimir. 
+    - Revealjs: basado en HTML, es el más completo de los formatos soportado por quarto para crear presentaciones.
+    - Beamer: basado en LaTeX para crear presentaciones. Genera un PDF.
+
+      [<img src="images/flujo_render_quarto.png" width="70%"/>]{.center}
+
+- La lista completa de formatos compatibles puede consultarse [aquí](https://quarto.org/docs/output-formats/all-formats.html).
+
+:::
+
+## Documentos Quarto (2/4)
+
+::: {.incremental .medium-par}
+
+- Cada documento es renderizado de acuerdo al formato especificado en código YAML (entre ```---```) en su encabezado o desde la línea de comando (terminal).
+
+  - Por ejemplo para un documento en formato HTML:
+  
+:::
+
+. . .
+
+::: {.custom-code-1}
+``` yaml
+---
+title: "My Document"
+format: 
+  html:
+    output-file: "document_html.html"
+---
+```
+:::
+
+[]{.medium-par}
+
+::: {.custom-code-1}
+
+``` {.bash filename="terminal"}
+quarto render document_html.qmd -t html -o document_html.html
+```
+:::
+
+
+
+## Documentos Quarto (3/4)
+
+::: {.incremental .medium-par}
+
+- Veamos un ejemplo de cómo luce un documento cuando es renderizado en cada uno de estos formato de Quarto. 
+:::
+
+. . .
+
+::: {.panel-tabset .medium-par}
+
+### HTML
+
+::: {.center}
+![](images/example_document_html.png){width="60%"}
+:::
+
+### PDF
+
+::: {.center}
+![](images/example_document_pdf.png){width="90%"}
+:::
+
+### Revealjs
+
+::: {.r-stack fragment-index=0 .center}
+
+![](images/example_document_revealjs_01.png){.fragment .fade-in-then-out width="90%"}
+
+![](images/example_document_revealjs_02.png){.fragment .fade-in-then-out width="90%"}
+
+![](images/example_document_revealjs_03.png){.fragment .fade-in-then-out width="90%"}
+
+:::
+
+### Beamer
+
+::: {.r-stack fragment-index=0 .center}
+
+![](images/example_beamer.png){.fragment .fade-in-then-out width="90%"}
+
+
+![](images/example_beamer2.png){.fragment .fade-in-then-out width="90%"}
+
+
+![](images/example_beamer3.png){.fragment .fade-in-then-out width="90%"}
+
+:::
+
+:::
+
+## Documentos Quarto (4/4)
+
+::: {.incremental .medium-par}
+- Para lograr el resultado anterior, veamos ahora cómo diseñar documentos con los mismos formatos.
+  - Aquí sólo nos concentraremos en el formato general de cada documento y más adelante aprenderemos cómo generar sus distintos componentes: código, plots, etc.
+  - Además, sólo se muestra una parte de cada documento, pero su versión completa se encuentra en el archivo indicado en el código YAML de cada documento, disponible en el repo de la clase.
+  
+:::
+
+. . .
+
+::: {.panel-tabset .medium-par}
+
+### HTML
+
+<div class=custom-code-1>
+```` r
+
+---
+title: "Documento HTML" # <1>
+subtitle: "Ejemplo de documento generado en Quarto"
+date: today
+author: "Capacitación R Intermedio"  # <1>
+format:  # <2>
+  html:
+    output-file: "document_html.html" # <2>
+    toc: true # <3>
+    toc-depth: 2
+    toc-title: Contenido
+    number-sections: true  # <3>
+    html-math-method: katex # <4>
+    # code-line-numbers: true
+    # css: styles.css # <4>
+---
+
+
+# Capítulo 1
+
+## Sección 1
+
+```{{r}}
+#| echo: true
+#| eval: true
+#| warning: false
+#| code-fold: true
+
+library(tidyverse)
+library(ggplot2)
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+ggplot(airquality, aes(temp_celsius, Ozone)) +
+  geom_point() + 
+  geom_smooth(method = "loess")
+```
+
+````
+1. Definiciones generales, comunes en múltiples formatos.
+2. Se especifica el formato de salida y opcionalmente el nombre del documento que será creado.
+3. Algunas opciones comunes para varios formatos: <span style="color:#4758ab;">toc</span> permite agregar una tabla de contenidos (toc) generada automáticamente, con título <span style="color:#4758ab;">toc-title</span>. 
+Además <span style="color:#4758ab;">toc-depth</span> determina el número de niveles de secciones que serán mostrados en la toc.
+4. Algunas opciones específicas del formato: <span style="color:#4758ab;">html-math-method</span> define el método usado para renderizar ecuaciones LaTeX. <span style="color:#4758ab;">code-line-numbers</span> permite incluir número de línea en bloques de código. 
+Modificaciones en la apariencia del documento pueden agregarse con estilos **CSS** personalizados en un documento <span style="color:#4758ab;">css</span>.
+</div>
+
+
+### PDF
+
+<div class=custom-code-1>
+```` r
+
+---
+title: "Documento PDF"
+subtitle: "Ejemplo de documento generado en Quarto"
+date: today
+author: "Capacitación R Intermedio"
+format:
+  pdf: # <1>
+    output-file: "document_pdf.pdf"
+    toc: true
+    toc-depth: 3
+    toc-title: Contenido
+    number-sections: true
+    # lof: true # <2>
+    # lot: true # <2>
+    documentclass: scrartcl # <3>
+    papersize: letter # <4>
+    geometry:
+      - top=30mm
+      - left=20mm # <4>
+---
+
+
+# Capítulo 1
+
+## Sección 1
+
+```{{r}}
+#| echo: true
+#| eval: true
+#| warning: false
+
+library(tidyverse)
+library(ggplot2)
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+ggplot(airquality, aes(temp_celsius, Ozone)) +
+  geom_point() + 
+  geom_smooth(method = "loess")
+```
+
+````
+1. Algunas opciones específicas del formato: 
+2.  <span style="color:#4758ab;">lof</span> y <span style="color:#4758ab;">lot</span> imprimen la lista de figuras y tablas en el documento. 
+3.  <span style="color:#4758ab;">documentclass</span> define la clase del documento: las estándar <span style="color:#4758ab;">article</span>,  <span style="color:#4758ab;">report</span>, <span style="color:#4758ab;">book</span> o sus equivalentes KOMA Script <span style="color:#4758ab;">scrartcl</span>, <span style="color:#4758ab;">scrreprt</span>, <span style="color:#4758ab;">scrbook</span>.
+4.  <span style="color:#4758ab;">papersize</span> y  <span style="color:#4758ab;">geometry</span> definen el tamaño del documento impreso y los márgenes del mismo.
+</div>
+
+
+### Revealjs
+
+<div class=custom-code-1>
+```` r
+
+---
+title: "Documento Revealjs"
+subtitle: "Ejemplo de documento generado en Quarto"
+date: today
+author: "Capacitación R Intermedio"
+format:
+  revealjs: # <1>
+    output-file: "document_revealjs.html"  
+    margin: 0 # <2>
+    slide-number: false # <3>
+    scrollable: true # <3>
+    logo: images/logo_portada2.png # <4>
+    # footer: "ejemplo de footer" # <4>
+    css: document_revealjs_styles.css # <5>
+---
+
+
+## Capítulo 1 | Sección 1
+
+```{{r}}
+#| echo: true
+#| eval: true
+#| warning: false
+#| code-fold: true
+
+library(tidyverse)
+library(ggplot2)
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+ggplot(airquality, aes(temp_celsius, Ozone)) +
+  geom_point() + 
+  geom_smooth(method = "loess")
+```
+
+````
+1. Algunas opciones específicas del formato: 
+2. <span style="color:#4758ab;">margin</span> fija el factor del tamaño de visualización que debe permanecer vacío alrededor del contenido (por defecto 0.1).
+[Otros parámetros](https://quarto.org/docs/presentations/revealjs/advanced.html) que controlan el tamaño y margen de las láminas son: <span style="color:#4758ab;">width</span>, <span style="color:#4758ab;">height</span>, <span style="color:#4758ab;">min-scale</span>, <span style="color:#4758ab;">max-scale</span>. 
+3. <span style="color:#4758ab;">slide-number</span> permite incluir o no los números de las láminas y <span style="color:#4758ab;">scrollable</span> permite hacer *scrolling* para mostrar contenido que queda fuera de los márgenes normales de una lámina. 
+4. <span style="color:#4758ab;">logo</span> y <span style="color:#4758ab;">footer</span> permiten incluir una imagen y un pie de página al pie de cada lámina.
+5. <span style="color:#4758ab;">css</span> permite incluir un archivo con estilos **CSS** personalizados, que pueden mejorar la visualización.
+Por ejemplo el archivo document_revealjs_styles.css contiene tres clases **CSS** usadas para: <br> 
+  **.reveal .code**: ajustar el tamaño de bloques de código. <br>
+  **.reveal .slide-logo**: ajustar el tamaño del logo. <br>
+  **.reveal h2**: personalizar un header de nivel 2 que incluya un banner institucional.
+</div>
+
+
+### Beamer
+
+<div class=custom-code-1>
+```` r
+
+---
+title: "Documento Beamer"
+subtitle: "Ejemplo de documento generado en quarto"
+author: "Capacitación presentaciones quarto"
+date: today
+format:
+  beamer:
+    code-line-numbers: true   # <1>
+
+---
+
+
+## Capitulo 1 | Sección 1
+
+```{{r setup, include=FALSE}}
+knitr::knit_hooks$set(size = function(before, options, envir) {   # <2>
+  if (before) {
+    paste0("\\", options$size)
+  } else {
+    "\\tiny"}
+})
+```
+
+```{{r}}
+#| eval: true
+#| echo: true
+#| message: false
+#| warning: false
+#| size: "normalsize"  # <2>
+
+library(tidyverse)
+library(ggplot2)
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+```
+
+
+## Capitulo 1 | Sección 1
+
+```{{r}}
+#| echo: false
+#| message: false
+
+ggplot(airquality, aes(temp_celsius, Ozone)) +
+  geom_point() + 
+  geom_smooth(method = "loess")
+
+```
+
+````
+1. <span style="color:#4758ab;">code-line-numbers</span> agrega los números del código
+2. Modificación del tamaño de letra para los chunks de código, las opciones son "normalsize", small", "tiny", "huge", entre otras.
+</div>
+
+
+:::
+
+
+## Documentos Quarto en RStudio
+
+::: {.incremental .medium-par}
+- RStudio desde su versión v2022.07 incluye soporte para crear, editar y visualizar documentos Quarto.
+:::
+
+. . .
+
+::: {.panel-tabset .medium-par}
+
+### Instalación
+
+::: {.medium-par}
+
+* Quarto puede ser instalado desde una consola R como cualquier otro paquete, con el siguiente comando: <br>
+
+``` {r eval = FALSE, echo = TRUE}
+install.packages("quarto")
+```
+:::
+
+### Crear documentos
+
+::: {.medium-par}
+* Usando el comando **File : New File : Quarto Document…** podemos crear un nuevo documento Quarto.
+:::
+
+::: {.center}
+![](images/rstudio_create_document.png){width="60%"}
+:::
+
+### Renderizar y previsualizar
+
+::: {.incremental .medium-par}
+::: {.medium-par}
+* Cliqueando el botón **Render** de la barra de herramientas, podemos renderizar el documento y previsualizar el output. <br>
+  []{.medium-par}
+  ![](images/rstudio_render.png){width="60%"}
+:::
+::: {.medium-par}
+* También es posible renderizar el documento y actualizar la previsualización cada vez que guardemos el documento. <br>
+Esto se consigue activando la casilla **Render on Save**.
+  []{.medium-par}
+  ![](images/rstudio_render_on_save.png){width="60%"}
+:::
+::: {.medium-par}
+* Alternativamente, un documento también puede ser renderizado directamente usando el paquete quarto en una consola R. <br>
+  []{.medium-par}
+  ![](images/rstudio_render_terminal.png){width="80%"}
+:::
+:::
+
+### Modos: visual y source
+
+::: {.incremental .medium-par}
+
+* En RStudio podemos ser el mismo documento en dos modos: **visual** y **source**.
+
+  * En el modo **visual** podemos usar la barra de herramientas para agregar o editar texto en markdown, tablas, figuras, etc.
+  
+  * En el modo **source** nos permite editar directamente el código fuente que genera cada componente en un documento Quarto.
+  []{.medium-par}
+  ![](images/rstudio_source_and_visual.png){width="100%"}
+:::
+
+:::
+
+
+
+## Ejercicio 1
+
+::: {.medium-par}
+1) Usando RStudio, cree un nuevo documento Quarto llamado <span style="color:#4758ab;"> ejercicio_documento_html.qmd</span>, que tenga formato HTML.
+2) Active la casilla **Render on Save** en RStudio, para que cada vez que guarde el documento éste sea renderizado y se actualice su previsualización.
+3) Copie el contenido del archivo <span style="color:#4758ab;"> document_html.qmd</span>, excepto por la **Sección 3**, en el nuevo archivo creado.
+Visualice que el nuevo contenido aparezca en el documento de Quarto.
+4) Cree un archivo llamado <span style="color:#4758ab;"> ejercicio_documento_html.css</span>, en el cual agregaremos algunos estilos CSS para modificar la apariencia de algunos elementos del documento:
+   - Agregue una clase <span style="color:#4758ab;"> .custom-code-1 </span> y use esta clase para cambiar la apariencia del bloque de código que aparece en la **Sección 2**.
+   ``` markdown
+   .custom-code-1{
+     font-size: 1.5rem
+   }
+   ```
+   - Agregue una segunda clase <span style="color:#4758ab;"> .custom-text-1 </span> y úsela para cambiar la apariencia de la tabla que aparece en la **Sección 2**.
+   ``` markdown
+   .custom-text-1{
+     font-size: 1.5rem;
+     font-style: italic;
+     background-color: rgb(243, 234, 137);
+   }
+   ```      
+   - Para aplicar una clase a un elemento del documento, debemos encerrarlo entre elementos html <span style="color:#4758ab;"> div </span>, por ejemplo para un bloque de código:
+   ```` markdown
+   <div class=custom-code-1>
+   ```{{r}}
+   library(ggplot2)
+   ```
+   </div>
+   ````
+:::
+
+
+
+## Ejercicio 1 | Solución
+
+
+::: {.r-stack fragment-index=0 .center}
+
+![](images/ejercicio_1_solucion_01.png){.fragment .fade-in-then-out width="80%"}
+
+![](images/ejercicio_1_solucion_02.png){.fragment .fade-in-then-out width="90%"}
+
+:::
+
+
+
+## Markdown Quarto básico
+
+::: {.incremental .medium-par}
+- Markdown es un formato de texto plano, diseñado para ser fácil de escribir y leer:
+- Veamos algunos ejemplos de las sintaxis markdown más comunes usadas en Quarto. 
+:::
+
+. . .
+
+::: {.panel-tabset .medium-par}
+
+### Formato de texto
+
+::: {.medium-par}
+
++-----------------------------------------+-----------------------------------------+
+| Sintaxis Markdown                       | Output                                  |
++=========================================+=========================================+
+| ``` markdown                            | *italics*, **bold**, ***bold italics*** |
+| *italics*, **bold**, ***bold italics*** |                                         |
+| ```                                     |                                         |
++-----------------------------------------+-----------------------------------------+
+| ``` markdown                            | superscript^2^ / subscript~2~           |
+| superscript^2^ / subscript~2~           |                                         |
+| ```                                     |                                         |
++-----------------------------------------+-----------------------------------------+
+| ``` markdown                            | ~~strikethrough~~                       |
+| ~~strikethrough~~                       |                                         |
+| ```                                     |                                         |
++-----------------------------------------+-----------------------------------------+
+| ``` markdown                            | `verbatim code`                         |
+| `verbatim code`                         |                                         |
+| ```                                     |                                         |
++-----------------------------------------+-----------------------------------------+
+
+:::
+
+### Headings {#headings}
+
+::: {.medium-par}
+
++-------------------+-----------------------------------+
+| Sintaxis Markdown | Output                            |
++===================+===================================+
+| ``` markdown      | # Header 1 {.heading-output}      |
+| # Header 1        |                                   |
+| ```               |                                   |
++-------------------+-----------------------------------+
+| ``` markdown      | ## Header 2 {.heading-output}     |
+| ## Header 2       |                                   |
+| ```               |                                   |
++-------------------+-----------------------------------+
+| ``` markdown      | ### Header 3 {.heading-output}    |
+| ### Header 3      |                                   |
+| ```               |                                   |
++-------------------+-----------------------------------+
+| ``` markdown      | #### Header 4 {.heading-output}   |
+| #### Header 4     |                                   |
+| ```               |                                   |
++-------------------+-----------------------------------+
+| ``` markdown      | ##### Header 5 {.heading-output}  |
+| ##### Header 5    |                                   |
+| ```               |                                   |
++-------------------+-----------------------------------+
+| ``` markdown      | ###### Header 6 {.heading-output} |
+| ###### Header 6   |                                   |
+| ```               |                                   |
++-------------------+-----------------------------------+
+
+<!-- ```{=html}
+<style type="text/css">
+.heading-output {
+  border-bottom: none;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+</style>
+``` -->
+:::
+
+
+### Listas
+
+::: {.medium-par}
+
++------------------------------------------------+------------------------------------------------------------------------------------+
+| Sintaxis Markdown                              | Output                                                                             |
++================================================+====================================================================================+
+| ``` markdown                                   | ::: {.medium-par}                                                                   |
+| * lista no numerada                            | * lista no numerada                                                                |
+|     + sub-item 1                               |   + sub-item 1                                                                     |
+|     + sub-item 2                               |   + sub-item 2                                                                     |
+|         - sub-sub-item 1                       |     - sub-sub-item 1                                                               |
+| ```                                            | :::                                                                                |
++------------------------------------------------+------------------------------------------------------------------------------------+
+| ``` markdown                                   |                                                                                    |
+| *   item 2                                     | -   <span style="font-size:16.0pt">item 2</span>                                   |
+|                                                |                                                                                    |
+|     Continuación (indentación de 4 espacios)   |     <span style="font-size:16.0pt">Continuación (indentación de 4 espacios)</span> |
+| ```                                            |                                                                                    |
++------------------------------------------------+------------------------------------------------------------------------------------+
+| ``` markdown                                   |                                                                                    |
+| 1. lista numerada                              |  1. lista numerada                                                                 |
+| 2. item 2                                      |  2. item 2                                                                         |
+|     i) sub-item 1                              |      i) sub-item 1                                                                 |
+|          A.  sub-sub-item 1                    |           A.  sub-sub-item 1                                                       |
+| ```                                            |                                                                                    |
++------------------------------------------------+------------------------------------------------------------------------------------+
+| ``` markdown                                   |                                                                                    |
+| - [ ] Tarea 1                                  | - [ ] Tarea 1                                                                      |
+| - [x] Tarea 2                                  | - [x] Tarea 2                                                                      |
+| ```                                            |                                                                                    |
++------------------------------------------------+------------------------------------------------------------------------------------+
+| ``` markdown                                   |                                                                                    |
+| (@)  Lista cuya numeración                     |  (1) Lista cuya numeración                                                         |
+|                                                |                                                                                    |
+| continúa después                               |  <span style="font-size:16.0pt">continúa después</span>                            |
+|                                                |                                                                                    |
+| (@)  de una interrupción                       |  (2) de una interrupción                                                           |
+| ```                                            |                                                                                    |
++------------------------------------------------+------------------------------------------------------------------------------------+
+| ``` markdown                                   |                                                                                    |
+| ::: {}                                         | ::: {}                                                                             |
+| 1. Lista                                       | 1. Lista                                                                           |
+| :::                                            | :::                                                                                |
+|                                                |                                                                                    |
+| ::: {}                                         | ::: {}                                                                             |
+| 1. Seguida de otra lista                       | 1. Seguida de otra lista                                                           |
+| :::                                            | :::                                                                                |
+| ```                                            |                                                                                    |
++------------------------------------------------+------------------------------------------------------------------------------------+
+| ``` markdown                                   |                                                                                    |
+| término                                        | término                                                                            |
+| : definición                                   | : definición                                                                       |
+| ```                                            |                                                                                    |
++------------------------------------------------+------------------------------------------------------------------------------------+
+
+:::
+
+
+
+### Ecuaciones
+
+::: {.medium-par}
+- Ecuaciones matemáticas pueden incluirse en modo <span style="color:#4758ab;">inline</span> usando el delimitador <span style="color:#4758ab;"> $ </span> o en modo <span style="color:#4758ab;"> display </span> con el delimitador <span style="color:#4758ab;"> $$ </span>. Por ejemplo
+:::
+
++-------------------------------+---------------------------------------------------------------+
+| Sintaxis Markdown             | Output                                                        |
++===============================+===============================================================+
+| ``` markdown                  |                                                               |
+| método `inline`: $E = mc^{2}$ | método <span style="color:#4758ab;">inline</span>: $E=mc^{2}$ |
+| ```                           |                                                               |
++-------------------------------+---------------------------------------------------------------+
+| ``` markdown                  |                                                               |
+| método `display`:             | método  <span style="color:#4758ab;">display</span>:          |
+|                               |   $$E = mc^{2}$$                                              |
+| $$E = mc^{2}$$                |                                                               |
+| ```                           |                                                               |
++-------------------------------+---------------------------------------------------------------+
+
+
+:::
+
+
+## Elementos base | Figuras, Tablas y Diagramas
+
+::: {.incremental .medium-par}
+- Quarto además permite incluir de forma sencilla y flexible imágenes, links, tablas y diagramas. Veamos algunos ejemplos.
+:::
+
+. . .
+
+::: {.panel-tabset .medium-par}
+
+### Links e Imágenes
+
+::: {.medium-par}
+
++------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
+| Sintaxis Markdown                                                            | Output                                                                                        |
++==============================================================================+===============================================================================================+
+| ``` markdown                                                                 | <https://quarto.org>                                                                          |
+| <https://quarto.org>                                                         |                                                                                               |
+| ```                                                                          |                                                                                               |
++------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
+| ``` markdown                                                                 | [Quarto](https://quarto.org)                                                                  |
+| [Quarto](https://quarto.org)                                                 |                                                                                               |
+| ```                                                                          |                                                                                               |
++------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
+| ``` markdown                                                                 | ![Elefante](images/elephant.png){.lightbox}                                                   |
+| ![Elefante](elephant.png){.lightbox}                                         |                                                                                               |
+| ```                                                                          |                                                                                               |
++------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
+| ``` markdown                                                                 | [![Elefante](images/elephant.png "Un elefante"){fig-alt="Un elefante."}](https://quarto.org)  |
+| [![Elefante](elephant.png "Un elefante")](https://quarto.org)                |                                                                                               |
+| ```                                                                          |                                                                                               |
++------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
+| ``` markdown                                                                 | [![](images/cat.png){fig-alt="Texto si imagen no carga."}](https://quarto.org)                |
+| [![](cat.png){fig-alt="Texto si imagen no carga"}](https://quarto.org)       |                                                                                               |
+| ```                                                                          |                                                                                               |
++------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------+
+
+:::
+
+### Tablas
+
+::: {.medium-par}
+
+#### Sintaxis Markdown
+
+``` markdown
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|   12  |  12  |    12   |    12  |
+|  123  |  123 |   123   |   123  |
+|    1  |    1 |     1   |     1  |
+```
+
+#### Output
+
+| Right | Left | Default | Center |
+|------:|:-----|---------|:------:|
+|    12 | 12   | 12      |   12   |
+|   123 | 123  | 123     |  123   |
+|     1 | 1    | 1       |   1    |
+
+:::
+
+
+### Diagramas
+
+::: {.medium-par}
+- Quarto tiene soporte nativo para renderizar diagramas [Mermaid](https://mermaid-js.github.io/mermaid/#/) y [Graphviz](https://graphviz.org/).
+Esto nos permite incluir diagramas de flujo, de secuencia, de estado, cartas Gantt, etc. en nuestros documentos.
+Por ejemplo, veamos el código para construir un diagrama Mermaid simple y cómo se ve después de renderizar.
+:::
+
+```{mermaid}
+%%| mermaid-format: js
+flowchart LR
+  A[Borde rectangular] --> B(Borde redondeado)
+  B --> C{Decisión}
+  C --> D[Resultado uno]
+  C --> E[Resultado dos]
+```
+
+::: {.center}
+![](images/diagram_mermaid.png){width="60%"}
+:::
+
+:::
+
+
+
+## Elementos base | Bloques de código: R (1/3)
+
+::: {.incremental .medium-par}
+- Quarto permite renderizar bloques de código de varios lenguajes (por ejemplo R, Python, Julia).
+- En particular, para renderizar y ejecutar código R, Quarto usa [Knitr](https://yihui.org/knitr/), al igual que R Markdown.
+- Bloques de código serán ejecutados al renderizar si comienzan con <span style="color:#4758ab;">```` ```{r} ```` </span> y terminan con <span style="color:#4758ab;">```` ``` ```` </span>.
+- El comportamiento del bloque de código puede ser configurado usando comentarios especiales al comienzo del bloque, identificados por <span style="color:#4758ab;">```` #| ```` </span>. Por ejemplo:
+  - <span style="color:#4758ab;"> echo: true </span> hace que se muestre el código al renderizar, mientras que con <span style="color:#4758ab;"> echo: false </span> no se muestra.
+  - <span style="color:#4758ab;"> eval: true </span> hace que el código se evalúe al renderizar, mientras que con <span style="color:#4758ab;"> eval: false </span> no se evalúa.
+  - <span style="color:#4758ab;"> warning: false </span> omite warnings encontrados al evaluar el bloque de código.
+  - <span style="color:#4758ab;"> code-fold: true </span> colapsa el bloque de código, para que el usuario pueda desplegarlo si lo necesita.
+  - <span style="color:#4758ab;"> fig-cap: </span> genera una leyenda para una figura generada por el código. 
+- Ésta es una diferencia importante con R Markdown, donde el comportamiento del código es definido en la primera línea, por ejemplo usando <span style="color:#4758ab;"> ```{r, echo = false}. </span>
+  - Quarto en cambio usa la sintaxis basada en <span style="color:#4758ab;">```` #| ```` </span> para acomodar mejor opciones más largas como <span style="color:#4758ab;"> fig-cap </span>, <span style="color:#4758ab;"> fig-subcap </span> o <span style="color:#4758ab;"> fig-alt </span> y crear documentos de forma más portables y consistente. 
+:::
+
+. . .
+
+::: {.panel-tabset .medium-par}
+
+### Quarto markdown
+
+::: {.custom-code-1}
+```` markdown
+```{{r}}
+#| echo: true
+#| eval: true
+#| warning: false
+#| code-fold: true
+#| fig-cap: "Nivel de ozono versus Temperatura."
+
+library(tidyverse)
+library(ggplot2)
+
+print(dim(airquality))
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+print(names(airquality))
+
+ggplot(airquality, aes(temp_celsius, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess")
+
+```
+````
+:::
+
+
+### Resultado
+
+::: {.medium-par}
+
+<!-- @fig-airquality further explores the impact of temperature on ozone level. -->
+
+```{r}
+#| echo: true
+#| eval: true
+#| warning: false
+#| code-fold: true
+#| fig-cap: "Nivel de ozono versus Temperatura."
+
+library(tidyverse)
+library(ggplot2)
+
+print(dim(airquality))   # <1>
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+print(names(airquality))   # <2>
+
+ggplot(airquality, aes(temp_celsius, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess")
+
+```
+:::
+
+:::
+
+
+## Elementos base | Bloques de código: R (2/3)
+
+::: {.incremental .medium-par}
+- Un bloque de código también puede incluir **anotaciones interactivas**, que permiten agregar explicaciones a líneas de código.
+- Para agregar una anotación:
+  - Cada línea anotada debe terminar con un comentario seguido de un espacio y luego un número de anotación encerrado entre <> (por ejemplo # <2>). El número de anotación puede repetirse si la anotación se extiende en múltiples líneas.
+  - Una lista numerada debe aparecer inmediatamente después del bloque de código que incluye el contenido de cada anotación. Cada número en la lista corresponde a la(s) línea(s) de código que tiene el mismo número de anotación.
+:::
+
+. . .
+
+::: {.custom-code-1}
+```` markdown
+```{{r}}
+#| echo: true
+#| eval: false
+#| warning: false
+#| fig-cap: "Nivel de ozono versus Temperatura."
+
+library(tidyverse) # <1>
+library(ggplot2)
+
+print(dim(airquality))
+
+airquality <- airquality %>%  # <2>
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )  # <2>
+
+print(names(airquality))  # <3>
+
+ggplot(airquality, aes(temp_celsius, Ozone)) +   # <4>
+  geom_point() + 
+  geom_smooth(method = "loess")  # <4>
+
+```
+1. Importar paquetes necesarios.
+2. Convertir variables a unidades de medidas conocidas.
+3. Explorar nombres de columnas en dataset.
+4. Generar plot de Ozono versus Temperatura (celsius).
+````
+:::
+
+
+
+## Elementos base | Bloques de código: R (3/3)
+
+::: {.medium-par}
+- En el estilo HTML por defecto las anotaciones se despliegan en una lista debajo del bloque de código, pero este comportamiento es modificable. 
+  - Haciendo click en el número de anotación en la lista se destacan las líneas relevantes del código. 
+:::
+
+::: {.custom-code-1}
+
+```{r}
+#| echo: true
+#| eval: false
+#| warning: false
+#| fig-cap: "Nivel de ozono versus Temperatura."
+
+library(tidyverse) # <1>
+library(ggplot2)
+
+print(dim(airquality))
+
+airquality <- airquality %>%  # <2>
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )  # <2>
+
+print(names(airquality))  # <3>
+
+ggplot(airquality, aes(temp_celsius, Ozone)) +   # <4>
+  geom_point() + 
+  geom_smooth(method = "loess")  # <4>
+
+```
+1. Importar paquetes necesarios.
+2. Convertir variables a unidades de medidas conocidas.
+3. Explorar nombres de columnas en dataset.
+4. Generar plot de Ozono versus Temperatura (celsius).
+:::
+
+
+
+## Comparación formatos presentaciones
+
+::: {.incremental .medium-par}   
+
+- Como hemos visto, podemos realizar diferentes configuraciones para crear y customizar nuestros documentos.
+
+- Pero no todas las configuraciones están disponibles para todos los formatos:
+
+  - **Revealjs**: 
+    - Puesto que genera un archivo .html, podemos crear visualizaciones interactivas.
+    - Al transformarlo a pdf se perderá la interactividad y puede que se deforme el formato.
+    - Template en css o scss.
+  
+  - **Beamer**:
+    - Requiere tener instalado *tinytex* o algún programa de *LaTex* en el computador
+    - Solo genera archivos .tex o pdf -> No admite visualizaciones interactivas.
+    - Template en .tex.
+
+  - **PPTX**:
+    - Menos flexible, se requiere tener instalado *PowerPoint*.
+    - No admite visualizaciones interactivas.
+    - Template en ppt, indicando la existencia de diapositivas base: Title Slide, Title and Content, Section Header, Two Content, Comparison, Content with Caption, Blank.
+
+:::
+
+## Comparación formatos presentaciones
+
+¡Apliquemos los formatos en RStudio! 
+
+. . .
+
+:::{.medium-par .incremental}
+
+- Descargue los archivos disponibles en la carpeta *ejemplos_presentacion* y veamos los estilos aplicados
+
+:::
+
+## Embeds (1/3)
+
+::: {.incremental .medium-par}
+- Usando el comando <span style="color:#4758ab;">embed</span>, podemos incluir o embeber el output de un documento Quarto (<span style="color:#4758ab;">.qmd</span> or <span style="color:#4758ab;">.ipynb</span>) en otro documento Quarto.
+- Para embeber el output de un bloque de código (o una celda de notebook), usamos la ruta al documento y la etiqueta (<span style="color:#4758ab;">label</span>) del bloque en el documento.
+  - Por ejemplo, el documento  <span style="color:#4758ab;">example_embed/airquality.qmd</span> tiene un bloque de código con etiqueta <br> <span style="color:#4758ab;">fig-ozono-temp</span>.
+  - En este caso, es preferible no incluir las opciones <span style="color:#4758ab;"> echo: ... </span>, <span style="color:#4758ab;"> eval: ... </span> en el bloque de código, ya que el código es evaluado por defecto al ser embebido. En la siguiente lámina veremos cómo podemos controlar si mostrarlo o no. 
+  - Otras opciones (<span style="color:#4758ab;"> code-fold: true</span>, etc.) sí pueden incluirse en el bloque de código.
+:::
+
+. . .
+
+::: {.medium-par}
+```` {.markdown shortcodes=false}
+
+---
+title: "Airquality (.qmd)"
+format: 
+  html:
+    output-file: "airquality.html"
+---
+
+```{{r}}
+#| label: fig-ozono-temp
+#| warning: false
+#| code-fold: true
+#| fig-cap: Nivel de ozono versus Temperatura.
+
+library(tidyverse)
+library(ggplot2)
+
+# print(dim(airquality))
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+# print(names(airquality))
+
+ggplot(airquality, aes(temp_celsius, Ozone)) +
+  geom_point() + 
+  geom_smooth(method = "loess")
+
+```
+
+````
+:::
+
+
+
+## Embeds (2/3)
+
+::: {.incremental .medium-par}
+- Podemos embeber el output del bloque de código anterior usando el comando:
+:::
+
+. . .
+
+::: {.big-par}
+```{.markdown shortcodes=false}
+{{< embed example_embed/airquality.qmd#fig-ozono-temp >}}
+```
+:::
+
+::: {.medium-par}
+{{< embed example_embed/airquality.qmd#fig-ozono-temp >}}
+:::
+
+
+
+## Embeds (3/3)
+
+::: {.incremental .medium-par}
+- Para además mostrar el bloque de código, podemos incluir la opción <span style="color:#4758ab;"> echo=true </span> en el comando.
+  - Al embeber, opciones como <span style="color:#4758ab;"> code-fold: true</span> son propagadas desde el bloque de código.
+:::
+
+. . .
+
+::: {.big-par}
+```{.markdown shortcodes=false}
+{{< embed example_embed/airquality.qmd#fig-ozono-temp echo=true >}}
+```
+:::
+
+::: {.medium-par}
+{{< embed example_embed/airquality.qmd#fig-ozono-temp echo=true >}}
+:::
+
+
+
+## Ejercicio 2
+
+::: {.medium-par}
+1) Usando RStudio, cree un nuevo documento Quarto llamado <span style="color:#4758ab;"> ejercicio_code_embed.qmd</span>, que tenga formato HTML.
+2) Active la casilla **Render on Save** en RStudio, para que cada vez que guarde el documento éste sea renderizado y se actualice su previsualización.
+3) Cree un archivo llamado <span style="color:#4758ab;"> code_embed.qmd</span>, que contenga dos bloques de código, donde en cada bloque se use el dataset <span style="color:#4758ab;"> airquality </span> para lo siguiente: 
+   - a) El **primer bloque** debe generar una tabla de Temperatura [°C] versus Viento [km/hr]. Asigne a este bloque la etiqueta <span style="color:#4758ab;"> code-1</span>.
+   - b) El **segundo bloque** debe generar un gráfico de Temperatura [°C] versus Viento [km/hr], con la leyenda "Gráfico de Temperatura versus Viento". Asigne a este bloque la etiqueta <span style="color:#4758ab;"> fig-1</span>.
+4) Agregue un **Capítulo** al documento <span style="color:#4758ab;"> ejercicio_code_embed.qmd</span>, con tres **Secciones** en que se muestren los siguientes resultados, en base al output resultante de los bloques de código creados en el archivo <span style="color:#4758ab;"> code_embed.qmd</span>.
+   - **Sección 1:** debe mostrar los 10 primeros registros de la tabla generada por el **primer bloque** de código, mientras que el código y cualquier posible *warning* deben  omitirse.
+   - **Sección 2:** debe mostrar el gráfico generado por el **segundo bloque** de código, mientras que el código y cualquier posible *warning* deben omitirse. 
+   - **Sección 3:** un *tabset* con dos pestañas, en que: 
+     - La **primera pestaña** muestre el código y tabla generada por el **primer bloque** de código. El código debe aparecer colapsado, de manera que pueda ser desplegado interactivamente. 
+     - **La segunda pestaña** muestre el código y el gráfico generado por el **segundo bloque** de código. El código debe aparecer colapsado, de manera que pueda ser desplegado interactivamente.
+
+   Visualice que el nuevo contenido aparezca en el documento de Quarto después de renderizar.
+:::
+
+
+
+## Ejercicio 2 | Solución
+
+
+::: {.r-stack fragment-index=0 .center}
+
+![](images/ejercicio_2_solucion_01.png){.fragment .fade-in-then-out width="80%"}
+
+![](images/ejercicio_2_solucion_02.png){.fragment .fade-in-then-out width="90%"}
+
+![](images/ejercicio_2_solucion_03.png){.fragment .fade-in-then-out width="90%"}
+
+:::
+
+
+
+## Dashboards
+
+::: {.incremental .medium-par}
+- Quarto permite crear dashboards interactivos usando R, Python, Julia y Observable. 
+- Es posible usar una variedad de componentes, incluyendo [Plotly](https://plotly.com/python/), [Leaflet](https://ipyleaflet.readthedocs.io/en/latest/), Jupyter Widgets, [htmlwidgets](https://www.htmlwidgets.org/); gráficos estáticos (Matplotlib, Seaborn, ggplot2, etc.); datos tabulares; anotaciones de texto, etc.
+- Usando Layouts es posible organizar la información en filas y columnas de manera fácil y flexible.
+  - Los componentes son redimensionados de forma inteligente para adaptar la visualización al navegador en dispositivos móviles.
+- Los dashboards pueden crearse usando cualquier editor de notebook usando Jupyter notebooks (<span style="color:#4758ab;">.ipynb</span>) o documentos markdown (<span style="color:#4758ab;">.qmd</span>).
+- Y pueden ser desplegados como páginas web estáticas (sin requerir un servidor) o integrando un backend [Shiny Server](/docs/dashboards/interactivity/shiny-python/index.qmd) para aumentar la interactividad.
+  - En esta clase sólo nos concentraremos en entender cómo generar un dashboard estático, ya que integrar un backend es un tema más avanzado.
+:::
+
+
+
+## Dashboards
+
+::: {.r-stack fragment-index=0 .center}
+
+![](images/dashboard_example_page_01.png){.fragment .fade-in-then-out width="100%"}
+
+![](images/dashboard_example_page_02.png){.fragment .fade-in-then-out width="100%"}
+
+:::
+
+
+
+## Dashboards
+
+::: {.medium-par}
+* Un dashboard consiste de varios componentes:
+1)  **Barra de Navegación**: Icono, título y autor junto con links a páginas (si se define más de una página). <br>
+  []{.medium-par}
+  ![](images/dashboard_example_components_pres_01.png){width="60%"}
+:::
+
+
+
+## Dashboards
+
+::: {.medium-par}
+- Un dashboard consiste de varios componentes:
+2)  **Páginas, Filas, Columnas, Tabsets**: Páginas, filas y columnas se definen usando headings de markdown (con atributos opcionales que controlan la altura, el ancho, etc). Tabsets permiten divisiones adicionales (*tabs* o pestañas) dentro de una fila o columna. <br>
+  []{.medium-par}
+  ![](images/dashboard_example_components_pres_02.png){width="100%"}
+:::
+
+
+
+## Dashboards
+
+::: {.medium-par}
+- Un dashboard consiste de varios componentes:
+2)  **Páginas, Filas, Columnas, Tabsets**: Páginas, filas y columnas se definen usando headings de markdown (con atributos opcionales que controlan la altura, el ancho, etc). Tabsets permiten divisiones adicionales (*tabs* o pestañas) dentro de una fila o columna. <br>
+  []{.medium-par}
+  ![](images/dashboard_example_components_pres_03.png){width="100%"}
+:::
+
+
+
+## Dashboards
+
+::: {.medium-par}
+- Un dashboard consiste de varios componentes:
+3)  **Cards, Sidebars, and Toolbars**: Cards pueden contener plots, visualizaciones de datos y contenido de forma libre. Sidebars y toolbars se usan para presentar inputs en dashboards interactivos.
+  []{.medium-par}
+  ![](images/dashboard_example_components_pres_04.png){width="120%"}
+:::
+
+
+
+## Dashboards
+
+::: {.medium-par .custom-code-1}
+
+```` r
+---
+title: "Ejemplo de Dashboard" # <1>
+author: "Capacitación R Intermedio" # <1>
+format:  # <1>
+  dashboard: # <1>
+    output-file: "dashboard_example.html"
+    logo: images/logo_portada2.png # <1>
+    orientation: rows # <2>
+---
+
+# Page 1 {orientation="rows" scrolling="false"} # <3>
+
+```{{r}}
+library(tidyverse)
+library(ggplot2)
+
+airquality <- airquality %>%
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+```
+
+## Row {height=5%} # <4>
+
+::: {.card}  # <5>
+Análisis de Calidad de Aire en la ciudad de Nueva York. Mayo a Septiembre, 1973.
+Referencia: <https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/airquality>.
+:::  # <5>
+
+## Row {height=35%}
+
+```{{r}}  # <6>
+library(DT)
+DT::datatable(airquality)
+```  # <6>
+
+## Row {height=60% .tabset}  # <7>
+
+```{{r}}
+#| title: Ozono versus Temperatura [°C]
+ggplot(airquality, aes(temp_celsius, Ozone)) +
+  geom_point() +
+  geom_smooth(method = "loess")
+```
+
+```{{r}}
+#| title: Ozono versus Viento [km/hr]
+ggplot(airquality, aes(wind_kmhr, Ozone)) +
+  geom_point() +
+  geom_smooth(method = "loess")
+```
+
+```{{r}}
+#| title: Temperatura [°C] versus Viento [km/hr]
+ggplot(airquality, aes(wind_kmhr, temp_celsius)) +
+  geom_point() +
+  geom_smooth(method = "loess")
+``` # <7>
+
+# Page 2 {orientation="rows" scrolling="true"}
+
+## Row {height=10%}
+
+::: {.card}
+Gapminder identifies systematic misconceptions about important global trends and proportions and uses reliable data to develop easy to understand teaching materials to rid people of their misconceptions.
+Gapminder is an independent Swedish foundation with no political, religious, or economic affiliations.
+Learn more about the Gampminder dataset at <https://www.gapminder.org/data/>.
+:::
+
+## Row {height=90%}  # <8>
+
+```{{r}}
+library(gapminder)
+library(DT)
+DT::datatable(gapminder)
+```
+
+```{{r}}
+#| fig-width: 10
+#| fig-height: 8
+paises <- c("Peru", "Bolivia", "Chile")
+# etiquetas <- data.frame(nombre_paises = paises, x = c(1975, 1965, 1962), y = c(6, 7, 4))
+gapminder %>%
+  filter(country %in% paises) %>%
+  ggplot() +
+  aes(x = year, y = lifeExp, color = country) +
+  geom_line()
+``` # <8>
+
+````
+
+1.  La barra de navegación se pobla con el título (<span style="color:#4758ab;">title</span>) y el autor (<span style="color:#4758ab;">author</span>), definidos tal como en otros formatos de documentos (html, pdf, etc). También puede incluirse un <span style="color:#4758ab;">logo</span>.
+2.  Por defecto, las páginas de un dashboard se ordenan primero por filas y luego por columns. Pero esto puede invertirse específicando la opción <span style="color:#4758ab;">orientation: columns</span>.
+3.  Páginas son creadas usando headings de nivel 1 antes de definir Filas y Columnas. El texto del heading se usará para vincular la página a la barra de navegación.
+4.  Las Filas y Columnas se definen usando headings de nivel 2. En esta página definimos tres filas y especificamos su tamaño relativo usando la opción <span style="color:#4758ab;">height</span>. En cambio, al definir columnas podemos especificar su tamaño relativo con la opción <span style="color:#4758ab;">width</span>.
+5.  Las Tarjetas (Cards) pueden tener contenido markdown arbitrario usando la opción <span style="color:#4758ab;">.card</span>.
+6.  Los Bloques de Código también pueden definirse como Tarjetas que viven dentro de las Filas y Columnas. Las tarjetas tienen un título opcional, que se especifica usando la opción <span style="color:#4758ab;">title</span>.
+7.  La tercera fila de la primera página incluye un <span style="color:#4758ab;">tabset</span> con tres pestañas, que permiten tener múltiples vistas de contenido.
+8.  La segunda fila de la segunda página incluye dos bloques de código, que son automáticamente separados en dos tarjetas adyacentes.
+
+:::
+
+
+## Para finalizar
+
+::: {.incremental .medium-par}   
+
+- Quarto nos permite crear diferentes tipos de documentos y es flexible 
+
+- Paciencia!! puesto que estamos creando diapositivas de forma más "programática", es normal que al inicio tengamos muchos errores de tipeo
+
+:::
+
+. . .
+
+¡Gracias!
+
+## Extra | Tabsets (output html) (1/2)
+
+::: {.incremental .medium-par}   
+- *Tabsets* o pestañas son usados para mostrar contenido que puede ser presentado en diferentes formas. 
+Por ejemplo, en este ejemplo un bloque de código es presentado sin y con el gráfico que genera. 
+:::
+
+. . .
+
+::: {.panel-tabset .medium-par}
+
+### Código
+
+```{r}
+#| echo: true
+#| eval: false
+#| warning: false
+
+library(tidyverse)
+library(ggplot2)
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+ggplot(airquality, aes(temp_celsius, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess")
+```
+
+### Código + gráfico
+
+```{r}
+#| echo: true
+#| eval: true
+#| warning: false
+#| fig-cap: "Nivel de ozono versus Temperatura."
+
+library(tidyverse)
+library(ggplot2)
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+ggplot(airquality, aes(temp_celsius, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess")
+```
+
+:::
+
+
+## Extra | Tabsets (output html) (2/2)
+
+::: {.incremental .medium-par}   
+- Un *tabset* es creado encerrando su contenido entre los elementos <span style="color:#4758ab;">::: {.panel-tabset}</span> y <span style="color:#4758ab;">:::</span>
+  - Luego, cada pestaña se crea agregando un heading de nivel 2 (en HTML) o de nivel 3 (en Revealjs).
+  - Por ejemplo, ésta es la sintaxis markdown que generarían las dos pestañas presentadas en la lámina anterior (en HTML).
+:::
+
+. . .
+
+::: {.medium-par}
+```` markdown
+::: {.panel-tabset}
+
+## Código
+
+```{{r}}
+#| echo: true
+#| eval: false
+#| warning: false
+
+library(tidyverse)
+library(ggplot2)
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+ggplot(airquality, aes(temp_celsius, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess")
+```
+
+## Código + gráfico
+
+```{{r}}
+#| echo: true
+#| eval: true
+#| warning: false
+#| fig-cap: "Nivel de ozono versus Temperatura."
+
+library(tidyverse)
+library(ggplot2)
+
+airquality <- airquality %>% 
+  mutate(
+    wind_kmhr = Wind / 0.6213711922,
+    temp_celsius = (Temp - 32)*5/9
+  )
+
+ggplot(airquality, aes(temp_celsius, Ozone)) + 
+  geom_point() + 
+  geom_smooth(method = "loess")
+```
+
+:::
+````
+:::
+
+
