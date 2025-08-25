@@ -59,11 +59,12 @@ code-annotations: below
 ## Introducción (1/2)
 
 ::: {.incremental .medium-par}
-- Quarto es una herramienta de código abierto que usa una variación específica de markdown ([Pandoc](https://pandoc.org)) para la publicación de documentos.
 
-- El objetivo de quarto es mejorar el proceso de creación y colaboración en documentos científicos y técnicos.
+- Quarto es una herramienta de código abierto para la creación y publicación de documentos científicos y técnicos.
 
-  - Para ello, quarto combina en un único sistema consistente la funcionalidad de R Markdown, bookdown, distill, xaringan, etc.
+- Usa una variación específica de markdown ([Pandoc](https://pandoc.org)), lo que permite generar múltiples formatos de salida: PDF, Word, HTML, presentaciones, libros, sitios web, dashboards, entre otros.
+
+- Uno de los objetivos principales de quarto es facilitar la reproducibilidad, pues integra en un mismo archivo texto, código y presentación de resultados.
   
 :::
 
@@ -71,7 +72,7 @@ code-annotations: below
 ## Introducción (2/2)
 
 
-[<img src="images/logo_quarto_rmarkdown.png" width="30%"/>]{.center}
+[<img src="images/logo_quarto_rmarkdown.png" width="24%"/>]{.center}
 
 [¿R Markdown o quarto?]{.center}
 
@@ -79,7 +80,9 @@ code-annotations: below
 
 ::: {.incremental .medium-par}
 
-- R Markdown está fundamentalmente atado a R. 
+- R Markdown es un formato de archivo reproducible (.Rmd) que combina texto en markdown con código en R (está fundamentalmente atado a R).
+
+  - Fue la base de muchas extensiones: bookdown (libros), xaringan (presentaciones), distill (publicaciones web), entre otras.
 
 - Quarto no requiere R y fue desarrollado para ser multi-lenguaje, comenzando con *R*, *Python*, *Javascript* y *Julia*, con la idea de que funcionara incluso con lenguajes que aún no existen.
 
@@ -104,6 +107,8 @@ code-annotations: below
 - La lista completa de formatos compatibles puede consultarse [aquí](https://quarto.org/docs/output-formats/all-formats.html).
 
 :::
+
+<!-- Editor de código fav-->
 
 ## Documentos Quarto (2/4)
 
@@ -195,8 +200,7 @@ quarto render document_html.qmd -t html -o document_html.html
 ::: {.incremental .medium-par}
 - Para lograr el resultado anterior, veamos ahora cómo diseñar documentos con los mismos formatos.
   - Aquí sólo nos concentraremos en el formato general de cada documento y más adelante aprenderemos cómo generar sus distintos componentes: código, plots, etc.
-  - Además, sólo se muestra una parte de cada documento, pero su versión completa se encuentra en el archivo indicado en el código YAML de cada documento, disponible en el repo de la clase.
-  
+
 :::
 
 . . .
@@ -389,27 +393,18 @@ date: today
 format:
   beamer:
     code-line-numbers: true   # <1>
-
+    # incremental: true       # <2>
+    # theme: Luebeck          # <3>
 ---
 
 
 ## Capitulo 1 | Sección 1
-
-```{{r setup, include=FALSE}}
-knitr::knit_hooks$set(size = function(before, options, envir) {   # <2>
-  if (before) {
-    paste0("\\", options$size)
-  } else {
-    "\\tiny"}
-})
-```
 
 ```{{r}}
 #| eval: true
 #| echo: true
 #| message: false
 #| warning: false
-#| size: "normalsize"  # <2>
 
 library(tidyverse)
 library(ggplot2)
@@ -437,9 +432,9 @@ ggplot(airquality, aes(temp_celsius, Ozone)) +
 
 ````
 1. <span style="color:#4758ab;">code-line-numbers</span> agrega los números del código
-2. Modificación del tamaño de letra para los chunks de código, las opciones son "normalsize", small", "tiny", "huge", entre otras.
+2. <span style="color:#4758ab;">incremental</span> nos permite mostrar las viñetas una a la vez. Por defecto se muestra toda la información.
+3. Con <span style="color:#4758ab;">theme</span> podemos indicar algún template disponible. Para mayor detalle revisar [templates](https://deic.uab.cat/~iblanes/beamer_gallery/index_by_theme.html)
 </div>
-
 
 :::
 
@@ -513,50 +508,71 @@ Esto se consigue activando la casilla **Render on Save**.
 
 
 
-## Ejercicio 1
+## Ejercicio
+
+[¡Conociendo el YAML!]{.center}
 
 ::: {.medium-par}
 1) Usando RStudio, cree un nuevo documento Quarto llamado <span style="color:#4758ab;"> ejercicio_documento_html.qmd</span>, que tenga formato HTML.
 2) Active la casilla **Render on Save** en RStudio, para que cada vez que guarde el documento éste sea renderizado y se actualice su previsualización.
-3) Copie el contenido del archivo <span style="color:#4758ab;"> document_html.qmd</span>, excepto por la **Sección 3**, en el nuevo archivo creado.
-Visualice que el nuevo contenido aparezca en el documento de Quarto.
-4) Cree un archivo llamado <span style="color:#4758ab;"> ejercicio_documento_html.css</span>, en el cual agregaremos algunos estilos CSS para modificar la apariencia de algunos elementos del documento:
-   - Agregue una clase <span style="color:#4758ab;"> .custom-code-1 </span> y use esta clase para cambiar la apariencia del bloque de código que aparece en la **Sección 2**.
-   ``` markdown
-   .custom-code-1{
-     font-size: 1.5rem
-   }
-   ```
-   - Agregue una segunda clase <span style="color:#4758ab;"> .custom-text-1 </span> y úsela para cambiar la apariencia de la tabla que aparece en la **Sección 2**.
-   ``` markdown
-   .custom-text-1{
-     font-size: 1.5rem;
-     font-style: italic;
-     background-color: rgb(243, 234, 137);
-   }
-   ```      
-   - Para aplicar una clase a un elemento del documento, debemos encerrarlo entre elementos html <span style="color:#4758ab;"> div </span>, por ejemplo para un bloque de código:
-   ```` markdown
-   <div class=custom-code-1>
-   ```{{r}}
-   library(ggplot2)
-   ```
-   </div>
-   ````
-:::
+3) En este documento realice las siguientes modificaciones:
+    - Ponga un titulo, subtitulo y una fecha que se modifique automáticamente en base al día en que se renderizó el archivo.
+    - Cambiar el tema *theme* por defecto a alguno de los siguientes templates disponibles: 
+      - cerulean, cosmo, cyborg, darkly, flatly, journal, litera, lumen, lux, materia, minty, morph, pulse, quartz, sandstone, simplex, sketchy, slate, solar, spacelab, superhero, united, vapor, yeti, zephyr.
+        - ojo, templates disponibles solo para documentos html
+    - Agregue la funcionalidad para poder visualizar los números de línea de código (*code-line-numbers*)
+    - Añada un indice utilizando *toc*
+    - Modifique el interlineado (*linestretch*) a 1.3
 
-
-
-## Ejercicio 1 | Solución
-
-
-::: {.r-stack fragment-index=0 .center}
-
-![](images/ejercicio_1_solucion_01.png){.fragment .fade-in-then-out width="80%"}
-
-![](images/ejercicio_1_solucion_02.png){.fragment .fade-in-then-out width="90%"}
 
 :::
+  
+<!-- 3) Copie el contenido del archivo <span style="color:#4758ab;"> document_html.qmd</span>, excepto por la **Sección 3**, en el nuevo archivo creado. -->
+<!-- Visualice que el nuevo contenido aparezca en el documento de Quarto. -->
+<!-- 4) Cree un archivo llamado <span style="color:#4758ab;"> ejercicio_documento_html.css</span>, en el cual agregaremos algunos estilos CSS para modificar la apariencia de algunos elementos del documento: -->
+<!--    - Agregue una clase <span style="color:#4758ab;"> .custom-code-1 </span> y use esta clase para cambiar la apariencia del bloque de código que aparece en la **Sección 2**. -->
+<!--    ``` markdown -->
+<!--    .custom-code-1{ -->
+<!--      font-size: 1.5rem -->
+<!--    } -->
+<!--    ``` -->
+<!--    - Agregue una segunda clase <span style="color:#4758ab;"> .custom-text-1 </span> y úsela para cambiar la apariencia de la tabla que aparece en la **Sección 2**. -->
+<!--    ``` markdown -->
+<!--    .custom-text-1{ -->
+<!--      font-size: 1.5rem; -->
+<!--      font-style: italic; -->
+<!--      background-color: rgb(243, 234, 137); -->
+<!--    } -->
+<!--    ```       -->
+<!--    - Para aplicar una clase a un elemento del documento, debemos encerrarlo entre elementos html <span style="color:#4758ab;"> div </span>, por ejemplo para un bloque de código: -->
+<!--    ```` markdown -->
+<!--    <div class=custom-code-1> -->
+<!--    ```{{r}} -->
+<!--    library(ggplot2) -->
+<!--    ``` -->
+<!--    </div> -->
+<!--    ```` -->
+<!-- ::: -->
+
+
+
+## Ejercicio | Solución
+
+```` r
+
+---
+title: "Ejercicio 1 - Conociendo el YAML"
+subtitle: "Ejemplo de documento generado en quarto"
+date: today
+format:
+  html:
+    theme: cosmo
+    code-line-numbers: true
+    toc: true
+    linestretch: 1.3
+---
+
+````
 
 
 
@@ -798,8 +814,22 @@ Esto nos permite incluir diagramas de flujo, de secuencia, de estado, cartas Gan
 Por ejemplo, veamos el código para construir un diagrama Mermaid simple y cómo se ve después de renderizar.
 :::
 
+
+```{{mermaid}}
+%%| mermaid-format: js
+
+flowchart LR
+  A[Borde rectangular] --> B(Borde redondeado)
+  B --> C{Decisión}
+  C --> D[Resultado uno]
+  C --> E[Resultado dos]
+```
+
+
+
 ```{mermaid}
 %%| mermaid-format: js
+
 flowchart LR
   A[Borde rectangular] --> B(Borde redondeado)
   B --> C{Decisión}
@@ -815,7 +845,7 @@ flowchart LR
 
 
 
-## Elementos base | Bloques de código: R (1/3)
+## Elementos base | Bloques de código: R (1/4)
 
 ::: {.incremental .medium-par}
 - Quarto permite renderizar bloques de código de varios lenguajes (por ejemplo R, Python, Julia).
@@ -827,6 +857,12 @@ flowchart LR
   - <span style="color:#4758ab;"> warning: false </span> omite warnings encontrados al evaluar el bloque de código.
   - <span style="color:#4758ab;"> code-fold: true </span> colapsa el bloque de código, para que el usuario pueda desplegarlo si lo necesita.
   - <span style="color:#4758ab;"> fig-cap: </span> genera una leyenda para una figura generada por el código. 
+  
+:::
+  
+## Elementos base | Bloques de código: R (2/4)
+
+::: {.incremental .medium-par}
 - Ésta es una diferencia importante con R Markdown, donde el comportamiento del código es definido en la primera línea, por ejemplo usando <span style="color:#4758ab;"> ```{r, echo = false}. </span>
   - Quarto en cambio usa la sintaxis basada en <span style="color:#4758ab;">```` #| ```` </span> para acomodar mejor opciones más largas como <span style="color:#4758ab;"> fig-cap </span>, <span style="color:#4758ab;"> fig-subcap </span> o <span style="color:#4758ab;"> fig-alt </span> y crear documentos de forma más portables y consistente. 
 :::
@@ -904,7 +940,7 @@ ggplot(airquality, aes(temp_celsius, Ozone)) +
 :::
 
 
-## Elementos base | Bloques de código: R (2/3)
+## Elementos base | Bloques de código: R (3/4)
 
 ::: {.incremental .medium-par}
 - Un bloque de código también puede incluir **anotaciones interactivas**, que permiten agregar explicaciones a líneas de código.
@@ -950,7 +986,7 @@ ggplot(airquality, aes(temp_celsius, Ozone)) +   # <4>
 
 
 
-## Elementos base | Bloques de código: R (3/3)
+## Elementos base | Bloques de código: R (4/4)
 
 ::: {.medium-par}
 - En el estilo HTML por defecto las anotaciones se despliegan en una lista debajo del bloque de código, pero este comportamiento es modificable. 
@@ -1018,15 +1054,8 @@ ggplot(airquality, aes(temp_celsius, Ozone)) +   # <4>
 
 ## Comparación formatos presentaciones
 
-¡Apliquemos los formatos en RStudio! 
+[¡Apliquemos los formatos en RStudio!]{.center}
 
-. . .
-
-:::{.medium-par .incremental}
-
-- Descargue los archivos disponibles en la carpeta *ejemplos_presentacion* y veamos los estilos aplicados
-
-:::
 
 ## Embeds (1/3)
 
@@ -1121,38 +1150,120 @@ ggplot(airquality, aes(temp_celsius, Ozone)) +
 
 
 
-## Ejercicio 2
+## Ejercicio
 
 ::: {.medium-par}
-1) Usando RStudio, cree un nuevo documento Quarto llamado <span style="color:#4758ab;"> ejercicio_code_embed.qmd</span>, que tenga formato HTML.
-2) Active la casilla **Render on Save** en RStudio, para que cada vez que guarde el documento éste sea renderizado y se actualice su previsualización.
-3) Cree un archivo llamado <span style="color:#4758ab;"> code_embed.qmd</span>, que contenga dos bloques de código, donde en cada bloque se use el dataset <span style="color:#4758ab;"> airquality </span> para lo siguiente: 
-   - a) El **primer bloque** debe generar una tabla de Temperatura [°C] versus Viento [km/hr]. Asigne a este bloque la etiqueta <span style="color:#4758ab;"> code-1</span>.
-   - b) El **segundo bloque** debe generar un gráfico de Temperatura [°C] versus Viento [km/hr], con la leyenda "Gráfico de Temperatura versus Viento". Asigne a este bloque la etiqueta <span style="color:#4758ab;"> fig-1</span>.
-4) Agregue un **Capítulo** al documento <span style="color:#4758ab;"> ejercicio_code_embed.qmd</span>, con tres **Secciones** en que se muestren los siguientes resultados, en base al output resultante de los bloques de código creados en el archivo <span style="color:#4758ab;"> code_embed.qmd</span>.
-   - **Sección 1:** debe mostrar los 10 primeros registros de la tabla generada por el **primer bloque** de código, mientras que el código y cualquier posible *warning* deben  omitirse.
-   - **Sección 2:** debe mostrar el gráfico generado por el **segundo bloque** de código, mientras que el código y cualquier posible *warning* deben omitirse. 
-   - **Sección 3:** un *tabset* con dos pestañas, en que: 
-     - La **primera pestaña** muestre el código y tabla generada por el **primer bloque** de código. El código debe aparecer colapsado, de manera que pueda ser desplegado interactivamente. 
-     - **La segunda pestaña** muestre el código y el gráfico generado por el **segundo bloque** de código. El código debe aparecer colapsado, de manera que pueda ser desplegado interactivamente.
 
-   Visualice que el nuevo contenido aparezca en el documento de Quarto después de renderizar.
-:::
+1) Usando RStudio, cree un nuevo documento Quarto llamado <span style="color:#4758ab;"> pres_code_embed.qmd</span>, que tenga algún formato de presentación (reveal o beamer).
 
+2) En el archivo <span style="color:#4758ab;"> estimaciones.qmd</span> podrá observar que existen diferentes estimaciones realizadas de la Encuesta Nacional de Juventudes (ENJ). Utilice la variable <span style="color:#4758ab;"> interes_politica </span> para generar dos bloques de código nuevos:
 
+    a) El **primer bloque** debe generar la estimación del porcentaje de jóvenes que están interesados o muy interesados en la política según región
+    
+    b) El **segundo bloque** debe generar un gráfico de la estimación a)
 
-## Ejercicio 2 | Solución
-
-
-::: {.r-stack fragment-index=0 .center}
-
-![](images/ejercicio_2_solucion_01.png){.fragment .fade-in-then-out width="80%"}
-
-![](images/ejercicio_2_solucion_02.png){.fragment .fade-in-then-out width="90%"}
-
-![](images/ejercicio_2_solucion_03.png){.fragment .fade-in-then-out width="90%"}
+3) En el archivo  <span style="color:#4758ab;"> pres_code_embed.qmd</span> agregue los siguientes outputs resultantes de los bloques de código creados en el archivo <span style="color:#4758ab;"> estimaciones.qmd</span>:
+    
+    a) Una diapositiva con el código de diseño de la muestra utilizada 
+    
+    b) Una diapositiva que tenga la estimación realizada con el paquete survey y paquete calidad del interés en la política según sexo.
+    
+    c) Una diapositiva con el gráfico generado en 3.b)
+    
+    d) Una diapositiva con un gráfico de barras de la estimación del porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier otra forma de gobierno" según rango etario
 
 :::
+
+## Ejercicio | Solución (1/2)
+
+Ejemplo bloques de código:
+
+```` {{r}}
+Estimación:
+
+```{{r}}
+
+#| label: interes_politica_region
+
+## con survey
+interes_politica_region <- svyby(~interes_politica,~region, diseño, svymean)
+
+interes_politica_region
+
+```
+
+Gráfico:
+
+```{{r}}
+#| label: plot-interes-politica-region
+#| fig-width: 6
+#| fig-height: 3.5
+#| fig-align: center
+
+interes_politica_region %>% 
+  mutate(label_pct = scales::percent(interes_politica, accuracy =  0.1),
+         region = as.character(region)) %>% 
+  ggplot(aes(x = region, y = interes_politica)) +
+  geom_col(fill = "steelblue") +
+  geom_text(aes(label = label_pct), 
+            vjust = -0.7, size = 2) +  
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1),
+                     limits = c(0, 0.7))+
+  labs(
+    x = "Región",
+    y = "% de jóvenes interesados en la política "
+  ) + 
+  theme_bw() 
+
+```
+````
+
+## Ejercicio | Solución (2/2)
+
+Ejemplo presentación:
+
+```` {{r}}
+---
+title: "Ejercicio embed"
+author: "Capacitación presentaciones quarto"
+format:
+  beamer:
+    code-line-numbers: true
+    # include-in-header: styles/template.tex
+    code-overflow: wrap
+    incremental: true
+---
+
+## Diseño de muestra
+
+Veamos como se declaró el diseño:
+
+{{< embed example_embed/estimaciones.qmd#declaracion-disenio echo=true >}}
+
+
+## Comparación estimación survey vs calidad
+
+Estimación con paquete `survey`:
+{{< embed example_embed/estimaciones.qmd#interes_politica_survey >}}
+
+Estimación con paquete `calidad`:
+{{< embed example_embed/estimaciones.qmd#interes_politica_calidad >}}
+
+
+## Estimación interes en política
+
+Porcentaje de jóvenes que están interesados o muy interesados en la política según región
+
+{{< embed example_embed/estimaciones.qmd#plot-interes-politica-region >}}
+
+## Estimación declaración jóvenes
+
+Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier otra forma de gobierno" según rango etario
+
+{{< embed example_embed/estimaciones.qmd#plot-democracia-rango-edad >}}
+
+````
+
 
 
 
@@ -1165,7 +1276,7 @@ ggplot(airquality, aes(temp_celsius, Ozone)) +
   - Los componentes son redimensionados de forma inteligente para adaptar la visualización al navegador en dispositivos móviles.
 - Los dashboards pueden crearse usando cualquier editor de notebook usando Jupyter notebooks (<span style="color:#4758ab;">.ipynb</span>) o documentos markdown (<span style="color:#4758ab;">.qmd</span>).
 - Y pueden ser desplegados como páginas web estáticas (sin requerir un servidor) o integrando un backend [Shiny Server](/docs/dashboards/interactivity/shiny-python/index.qmd) para aumentar la interactividad.
-  - En esta clase sólo nos concentraremos en entender cómo generar un dashboard estático, ya que integrar un backend es un tema más avanzado.
+  - En esta sesión sólo nos concentraremos en entender cómo generar un dashboard estático, ya que integrar un backend es un tema más avanzado.
 :::
 
 
@@ -1347,7 +1458,7 @@ gapminder %>%
 
 . . .
 
-¡Gracias!
+[¡Gracias!]{.center}
 
 ## Extra | Tabsets (output html) (1/2)
 
