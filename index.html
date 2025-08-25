@@ -1565,7 +1565,6 @@ definición
 <section id="comparación-formatos-presentaciones-1" class="slide level2">
 <h2>Comparación formatos presentaciones</h2>
 <p><span class="center">¡Apliquemos los formatos en RStudio!</span></p>
-<p>:::</p>
 </section>
 <section id="embeds-13" class="slide level2">
 <h2>Embeds (1/3)</h2>
@@ -1629,7 +1628,7 @@ definición
 <div class="sourceCode" id="cb35" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb35-1"><a href=""></a>{{&lt; embed example_embed/airquality.qmd#fig-ozono-temp &gt;}}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="medium-par">
-<div class="quarto-embed-nb-cell" data-notebook="C:\Users\javie\Documents\capacitacion-quarto-injuv\example_embed\airquality.qmd" data-notebook-title="Airquality (.qmd)" data-notebook-cellid="cell-fig-ozono-temp">
+<div class="quarto-embed-nb-cell" data-notebook="C:\Users\jmpreussa\Documents\capacitacion-quarto-injuv\example_embed\airquality.qmd" data-notebook-title="Airquality (.qmd)" data-notebook-cellid="cell-fig-ozono-temp">
 <div id="cell-fig-ozono-temp" class="cell">
 <div class="cell-output cell-output-display">
 <div id="fig-ozono-temp" class="quarto-float quarto-figure quarto-figure-center">
@@ -1663,7 +1662,7 @@ Figure&nbsp;1: Nivel de ozono versus Temperatura.
 <div class="sourceCode" id="cb36" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb36-1"><a href=""></a>{{&lt; embed example_embed/airquality.qmd#fig-ozono-temp echo=true &gt;}}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="medium-par">
-<div class="quarto-embed-nb-cell" data-notebook="C:\Users\javie\Documents\capacitacion-quarto-injuv\example_embed\airquality.qmd" data-notebook-title="Airquality (.qmd)" data-notebook-cellid="cell-fig-ozono-temp">
+<div class="quarto-embed-nb-cell" data-notebook="C:\Users\jmpreussa\Documents\capacitacion-quarto-injuv\example_embed\airquality.qmd" data-notebook-title="Airquality (.qmd)" data-notebook-cellid="cell-fig-ozono-temp">
 <div id="cell-fig-ozono-temp" class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -1706,15 +1705,15 @@ Figure&nbsp;2: Nivel de ozono versus Temperatura.
 <div class="medium-par">
 <ol type="1">
 <li><p>Usando RStudio, cree un nuevo documento Quarto llamado <span style="color:#4758ab;"> pres_code_embed.qmd</span>, que tenga algún formato de presentación (reveal o beamer).</p></li>
-<li><p>En el archivo <span style="color:#4758ab;"> estimaciones.qmd</span> podrá observar que existen diferentes estimaciones realizadas de la Encuesta Nacional de Juventudes (ENJ). Utilice la variable <span style="color:#4758ab;"> interes_politica </span> para generar dos bloques de código nuevos:</p>
+<li><p>En el archivo <span style="color:#4758ab;"> estimaciones.qmd</span> podrá observar que existen diferentes estimaciones de la Encuesta Nacional de Juventudes (ENJ). Utilice la variable <span style="color:#4758ab;"> interes_politica </span> para generar dos bloques de código nuevos:</p>
 <ol type="a">
 <li><p>El <strong>primer bloque</strong> debe generar la estimación del porcentaje de jóvenes que están interesados o muy interesados en la política según región</p></li>
 <li><p>El <strong>segundo bloque</strong> debe generar un gráfico de la estimación a)</p></li>
 </ol></li>
 <li><p>En el archivo <span style="color:#4758ab;"> pres_code_embed.qmd</span> agregue los siguientes outputs resultantes de los bloques de código creados en el archivo <span style="color:#4758ab;"> estimaciones.qmd</span>:</p>
 <ol type="a">
+<li><p>Una diapostiva que tenga el tabulado de la preferencia tipo gobierno según zona urbana/rural proveniente del archivo <em>Tablas capacitacion INe.xlsx</em></p></li>
 <li><p>Una diapositiva con el código de diseño de la muestra utilizada</p></li>
-<li><p>Una diapositiva que tenga la estimación realizada con el paquete survey y paquete calidad del interés en la política según sexo.</p></li>
 <li><p>Una diapositiva con el gráfico generado en 3.b)</p></li>
 <li><p>Una diapositiva con un gráfico de barras de la estimación del porcentaje de jóvenes que declaran que “La democracia es preferible a cualquier otra forma de gobierno” según rango etario</p></li>
 </ol></li>
@@ -1743,7 +1742,7 @@ Figure&nbsp;2: Nivel de ozono versus Temperatura.
 <span id="cb38-17"><a href=""></a><span class="in">```{{r}}</span></span>
 <span id="cb38-18"><a href=""></a><span class="in">#| label: plot-interes-politica-region</span></span>
 <span id="cb38-19"><a href=""></a><span class="in">#| fig-width: 6</span></span>
-<span id="cb38-20"><a href=""></a><span class="in">#| fig-height: 3.5</span></span>
+<span id="cb38-20"><a href=""></a><span class="in">#| fig-height: 3</span></span>
 <span id="cb38-21"><a href=""></a><span class="in">#| fig-align: center</span></span>
 <span id="cb38-22"><a href=""></a></span>
 <span id="cb38-23"><a href=""></a><span class="in">interes_politica_region %&gt;% </span></span>
@@ -1768,46 +1767,53 @@ Figure&nbsp;2: Nivel de ozono versus Temperatura.
 <h2>Ejercicio | Solución (2/2)</h2>
 <p>Ejemplo presentación:</p>
 <div class="sourceCode" id="cb39"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb39-1"><a href=""></a><span class="in">```{r}</span></span>
-<span id="cb39-2"><a href=""></a><span class="in">---</span></span>
-<span id="cb39-3"><a href=""></a><span class="in">title: "Ejercicio embed"</span></span>
-<span id="cb39-4"><a href=""></a><span class="in">author: "Capacitación presentaciones quarto"</span></span>
-<span id="cb39-5"><a href=""></a><span class="in">format:</span></span>
-<span id="cb39-6"><a href=""></a><span class="in">  beamer:</span></span>
-<span id="cb39-7"><a href=""></a><span class="in">    code-line-numbers: true</span></span>
-<span id="cb39-8"><a href=""></a><span class="in">    # include-in-header: styles/template.tex</span></span>
-<span id="cb39-9"><a href=""></a><span class="in">    code-overflow: wrap</span></span>
-<span id="cb39-10"><a href=""></a><span class="in">    incremental: true</span></span>
-<span id="cb39-11"><a href=""></a><span class="in">---</span></span>
+<span id="cb39-2"><a href=""></a><span class="in">## Tabulado</span></span>
+<span id="cb39-3"><a href=""></a></span>
+<span id="cb39-4"><a href=""></a><span class="in">Tabulado para las preferencias de tipo de gobierno de los jóvenes según zona urbana y rural:</span></span>
+<span id="cb39-5"><a href=""></a></span>
+<span id="cb39-6"><a href=""></a><span class="in">```{[r]}</span></span>
+<span id="cb39-7"><a href=""></a><span class="in">#| message: false</span></span>
+<span id="cb39-8"><a href=""></a><span class="in">#| echo: false</span></span>
+<span id="cb39-9"><a href=""></a><span class="in">#| label: tipo_gob</span></span>
+<span id="cb39-10"><a href=""></a></span>
+<span id="cb39-11"><a href=""></a><span class="in">library(dplyr)</span></span>
 <span id="cb39-12"><a href=""></a></span>
-<span id="cb39-13"><a href=""></a><span class="in">## Diseño de muestra</span></span>
-<span id="cb39-14"><a href=""></a></span>
-<span id="cb39-15"><a href=""></a><span class="in">Veamos como se declaró el diseño:</span></span>
+<span id="cb39-13"><a href=""></a><span class="in">Tabla_tipo_gob &lt;- readxl::read_excel("example_embed/data/Tablas capacitación INE.xlsx", </span></span>
+<span id="cb39-14"><a href=""></a><span class="in">                                     sheet = "Preferencia tipo de gob segment",</span></span>
+<span id="cb39-15"><a href=""></a><span class="in">                                     range = "A3:I7")</span></span>
 <span id="cb39-16"><a href=""></a></span>
-<span id="cb39-17"><a href=""></a><span class="in">{{&lt; embed example_embed/estimaciones.qmd#declaracion-disenio true &gt;}}</span></span>
-<span id="cb39-18"><a href=""></a></span>
+<span id="cb39-17"><a href=""></a><span class="in">Tabla_tipo_gob &lt;- Tabla_tipo_gob %&gt;% </span></span>
+<span id="cb39-18"><a href=""></a><span class="in">  rename(Pregunta = `...1`) </span></span>
 <span id="cb39-19"><a href=""></a></span>
-<span id="cb39-20"><a href=""></a><span class="in">## Comparación estimación survey vs calidad</span></span>
-<span id="cb39-21"><a href=""></a></span>
-<span id="cb39-22"><a href=""></a><span class="in">Estimación con paquete `survey`:</span></span>
-<span id="cb39-23"><a href=""></a><span class="in">{{&lt; embed example_embed/estimaciones.qmd#interes_politica_survey &gt;}}</span></span>
+<span id="cb39-20"><a href=""></a><span class="in">Tabla_tipo_gob %&gt;% </span></span>
+<span id="cb39-21"><a href=""></a><span class="in">  select(Pregunta, Urbano, Rural) %&gt;% </span></span>
+<span id="cb39-22"><a href=""></a><span class="in">  kableExtra::kbl() %&gt;% </span></span>
+<span id="cb39-23"><a href=""></a><span class="in">  kableExtra::kable_styling(font_size = 6) </span></span>
 <span id="cb39-24"><a href=""></a></span>
-<span id="cb39-25"><a href=""></a><span class="in">Estimación con paquete `calidad`:</span></span>
-<span id="cb39-26"><a href=""></a><span class="in">{{&lt; embed example_embed/estimaciones.qmd#interes_politica_calidad &gt;}}</span></span>
+<span id="cb39-25"><a href=""></a><span class="in">```</span></span>
+<span id="cb39-26"><a href=""></a></span>
 <span id="cb39-27"><a href=""></a></span>
-<span id="cb39-28"><a href=""></a></span>
-<span id="cb39-29"><a href=""></a><span class="in">## Estimación interes en política</span></span>
-<span id="cb39-30"><a href=""></a></span>
-<span id="cb39-31"><a href=""></a><span class="in">Porcentaje de jóvenes que están interesados o muy interesados en la política según región</span></span>
-<span id="cb39-32"><a href=""></a></span>
-<span id="cb39-33"><a href=""></a><span class="in">{{&lt; embed example_embed/estimaciones.qmd#plot-interes-politica-region &gt;}}</span></span>
+<span id="cb39-28"><a href=""></a><span class="fu">## Diseño de muestra</span></span>
+<span id="cb39-29"><a href=""></a></span>
+<span id="cb39-30"><a href=""></a>Veamos como se declaró el diseño:</span>
+<span id="cb39-31"><a href=""></a></span>
+<span id="cb39-32"><a href=""></a>{{&lt; embed example_embed/estimaciones.qmd#declaracion-disenio true &gt;}}</span>
+<span id="cb39-33"><a href=""></a></span>
 <span id="cb39-34"><a href=""></a></span>
-<span id="cb39-35"><a href=""></a><span class="in">## Estimación declaración jóvenes</span></span>
+<span id="cb39-35"><a href=""></a><span class="fu">## Estimación interes en política</span></span>
 <span id="cb39-36"><a href=""></a></span>
-<span id="cb39-37"><a href=""></a><span class="in">Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier otra forma de gobierno" según rango etario</span></span>
+<span id="cb39-37"><a href=""></a>Porcentaje de jóvenes que están interesados o muy interesados en la política según región</span>
 <span id="cb39-38"><a href=""></a></span>
-<span id="cb39-39"><a href=""></a><span class="in">{{&lt; embed example_embed/estimaciones.qmd#plot-democracia-rango-edad &gt;}}</span></span>
+<span id="cb39-39"><a href=""></a>{{&lt; embed example_embed/estimaciones_solucion.qmd#plot-interes-politica-region &gt;}}</span>
 <span id="cb39-40"><a href=""></a></span>
-<span id="cb39-41"><a href=""></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb39-41"><a href=""></a><span class="fu">## Estimación declaración jóvenes</span></span>
+<span id="cb39-42"><a href=""></a></span>
+<span id="cb39-43"><a href=""></a>Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier otra forma de gobierno" según rango etario</span>
+<span id="cb39-44"><a href=""></a></span>
+<span id="cb39-45"><a href=""></a>{{&lt; embed example_embed/estimaciones_solucion.qmd#plot-democracia-rango-edad &gt;}}</span>
+<span id="cb39-46"><a href=""></a></span>
+<span id="cb39-47"><a href=""></a></span>
+<span id="cb39-48"><a href=""></a><span class="in">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="dashboards" class="slide level2">
 <h2>Dashboards</h2>
@@ -2727,7 +2733,7 @@ Figure&nbsp;2: Nivel de ozono versus Temperatura.
       }
     });
     </script>
-    <script>var lightboxQuarto = GLightbox({"loop":false,"descPosition":"bottom","openEffect":"zoom","closeEffect":"zoom","selector":".lightbox"});
+    <script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","selector":".lightbox","openEffect":"zoom","loop":false,"descPosition":"bottom"});
     (function() {
       let previousOnload = window.onload;
       window.onload = () => {

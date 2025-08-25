@@ -1156,7 +1156,7 @@ ggplot(airquality, aes(temp_celsius, Ozone)) +
 
 1) Usando RStudio, cree un nuevo documento Quarto llamado <span style="color:#4758ab;"> pres_code_embed.qmd</span>, que tenga algún formato de presentación (reveal o beamer).
 
-2) En el archivo <span style="color:#4758ab;"> estimaciones.qmd</span> podrá observar que existen diferentes estimaciones realizadas de la Encuesta Nacional de Juventudes (ENJ). Utilice la variable <span style="color:#4758ab;"> interes_politica </span> para generar dos bloques de código nuevos:
+2) En el archivo <span style="color:#4758ab;"> estimaciones.qmd</span> podrá observar que existen diferentes estimaciones de la Encuesta Nacional de Juventudes (ENJ). Utilice la variable <span style="color:#4758ab;"> interes_politica </span> para generar dos bloques de código nuevos:
 
     a) El **primer bloque** debe generar la estimación del porcentaje de jóvenes que están interesados o muy interesados en la política según región
     
@@ -1164,9 +1164,9 @@ ggplot(airquality, aes(temp_celsius, Ozone)) +
 
 3) En el archivo  <span style="color:#4758ab;"> pres_code_embed.qmd</span> agregue los siguientes outputs resultantes de los bloques de código creados en el archivo <span style="color:#4758ab;"> estimaciones.qmd</span>:
     
-    a) Una diapositiva con el código de diseño de la muestra utilizada 
+    a) Una diapostiva que tenga el tabulado de la preferencia tipo gobierno según zona urbana/rural proveniente del archivo *Tablas capacitacion INe.xlsx*
     
-    b) Una diapositiva que tenga la estimación realizada con el paquete survey y paquete calidad del interés en la política según sexo.
+    b) Una diapositiva con el código de diseño de la muestra utilizada 
     
     c) Una diapositiva con el gráfico generado en 3.b)
     
@@ -1197,7 +1197,7 @@ Gráfico:
 ```{{r}}
 #| label: plot-interes-politica-region
 #| fig-width: 6
-#| fig-height: 3.5
+#| fig-height: 3
 #| fig-align: center
 
 interes_politica_region %>% 
@@ -1223,16 +1223,31 @@ interes_politica_region %>%
 Ejemplo presentación:
 
 ```` {{r}}
----
-title: "Ejercicio embed"
-author: "Capacitación presentaciones quarto"
-format:
-  beamer:
-    code-line-numbers: true
-    # include-in-header: styles/template.tex
-    code-overflow: wrap
-    incremental: true
----
+## Tabulado
+
+Tabulado para las preferencias de tipo de gobierno de los jóvenes según zona urbana y rural:
+
+```{[r]}
+#| message: false
+#| echo: false
+#| label: tipo_gob
+
+library(dplyr)
+
+Tabla_tipo_gob <- readxl::read_excel("example_embed/data/Tablas capacitación INE.xlsx", 
+                                     sheet = "Preferencia tipo de gob segment",
+                                     range = "A3:I7")
+
+Tabla_tipo_gob <- Tabla_tipo_gob %>% 
+  rename(Pregunta = `...1`) 
+
+Tabla_tipo_gob %>% 
+  select(Pregunta, Urbano, Rural) %>% 
+  kableExtra::kbl() %>% 
+  kableExtra::kable_styling(font_size = 6) 
+
+```
+
 
 ## Diseño de muestra
 
@@ -1241,26 +1256,18 @@ Veamos como se declaró el diseño:
 {{< embed example_embed/estimaciones.qmd#declaracion-disenio echo=true >}}
 
 
-## Comparación estimación survey vs calidad
-
-Estimación con paquete `survey`:
-{{< embed example_embed/estimaciones.qmd#interes_politica_survey >}}
-
-Estimación con paquete `calidad`:
-{{< embed example_embed/estimaciones.qmd#interes_politica_calidad >}}
-
-
 ## Estimación interes en política
 
 Porcentaje de jóvenes que están interesados o muy interesados en la política según región
 
-{{< embed example_embed/estimaciones.qmd#plot-interes-politica-region >}}
+{{< embed example_embed/estimaciones_solucion.qmd#plot-interes-politica-region >}}
 
 ## Estimación declaración jóvenes
 
 Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier otra forma de gobierno" según rango etario
 
-{{< embed example_embed/estimaciones.qmd#plot-democracia-rango-edad >}}
+{{< embed example_embed/estimaciones_solucion.qmd#plot-democracia-rango-edad >}}
+
 
 ````
 

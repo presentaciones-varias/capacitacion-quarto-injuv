@@ -1,5 +1,5 @@
 ---
-# title: "Presentación de prueba"
+#title: "Presentación de prueba"
 format:
   pptx:
     reference-doc: styles/template_pptx.pptx
@@ -8,8 +8,9 @@ slide-level: 2
 ---
 
 # 
-
 Presentación de prueba
+
+
 
 ## Quarto
 
@@ -29,3 +30,5 @@ When you click the **Render** button a presentation will be generated that inclu
 ```{r}
 1 + 1
 ```
+
+

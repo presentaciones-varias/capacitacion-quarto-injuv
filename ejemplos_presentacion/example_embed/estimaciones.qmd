@@ -1,0 +1,122 @@
+---
+title: "Estimaciones"
+subtitle: "Ejemplo de embeds"
+format: 
+  html:
+    toc: true
+    
+---
+
+## Procesamiento
+
+Procesaremos la base de datos, creando variables dummy para la estimación de proporciones. Adicionalmente, crearemos una columna llamada `rango_edad` la cual nos permitirá realizar las estimaciones para contrastar los tramos etarios.
+
+```{r}
+#| label: procesamiento-base
+#| message: false
+#| warning: false
+
+library(dplyr)
+library(survey)
+library(ggplot2)
+library(haven)
+
+load('data/BBDD capacitación INE final.RData')
+base <- BBDD_capacitación_INE_final
+
+base <- base %>%  
+  filter(edad_sel_fin<30) %>%         ## filtramos poblacion objetivo
+  mutate(interes_politica = ifelse(m3_p16 %in% c(3, 4), 1, 0),
+         la_democracia_es_preferible = ifelse(m3_p13 ==1, 1, 0),
+         rango_edad = case_when(
+           edad_sel_fin >= 15 & edad_sel_fin <= 19 ~ "15-19",
+           edad_sel_fin >= 20 & edad_sel_fin <= 24 ~ "20-24",
+           edad_sel_fin >= 25 & edad_sel_fin <= 29 ~ "25-29",
+           TRUE ~ NA_character_),
+         sexo_charc = ifelse(sexo_sel_fin ==1, 'Hombre', 'Mujer'))
+
+
+```
+
+
+## Definición del diseño muestral
+
+```{r}
+#| label: declaracion-disenio
+
+options(survey.lonely.psu="adjust")
+
+diseño <- survey::svydesign(id = ~folio_mapa+ ~folio_encuesta +~ nom_comuna ,
+                            strata = ~var_strat,
+                            weights = ~weight_cal_trunc,
+                            data = base,
+                            nest=TRUE)
+
+```
+
+
+## Estimaciones
+
+
+Primero realizaremos la estimación por interés en la política según sexo. Para ello contrastaremos los valores obtenidos con el paquete `survey`:
+
+```{r}
+#| label: interes_politica_survey
+
+interes_politica_survey <- svyby(~interes_politica,~sexo_charc, diseño, svymean)
+
+interes_politica_survey
+
+```
+
+
+Estimación del porcentaje de jóvenes que declaran que "la democracia es preferible a cualquier otra forma de gobierno" según sexo
+
+
+```{r}
+#| label: democracia-sexo
+
+la_democracia_es_preferible_por_sexo <- svyby(~la_democracia_es_preferible,~sexo_charc, diseño, svymean)
+
+```
+
+Estimación del porcentaje de jóvenes que declaran que "la democracia es preferible a cualquier otra forma de gobierno" según rango etario
+
+
+```{r}
+#| label: democracia-rango-edad
+
+la_democracia_es_preferible_rango_edad <- svyby(~la_democracia_es_preferible,~rango_edad, diseño, svymean)
+
+```
+
+
+## Plot
+
+Plot del porcentaje de jóvenes que declaran que "la democracia es preferible a cualquier otra forma de gobierno" según rango etario
+
+```{r}
+#| label: plot-democracia-rango-edad
+#| fig-width: 6
+#| fig-height: 3
+#| fig-align: center
+
+la_democracia_es_preferible_rango_edad %>% 
+  mutate(label_pct = scales::percent(la_democracia_es_preferible, accuracy =  0.01)) %>% 
+  ggplot(aes(x = rango_edad, y = la_democracia_es_preferible)) +
+  geom_col(fill = "steelblue") +
+  geom_text(aes(label = label_pct), 
+            vjust = -0.5, size = 5) +  
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1),
+                     limits = c(0, 0.7))+
+  labs(
+    title = "Preferencia por opción 1 m3_p13 según rango etario",
+    x = "Rango de edad",
+    y = "% que considera opción 1 m3_p13"
+  ) +
+  theme_bw()
+
+```
+
+
+

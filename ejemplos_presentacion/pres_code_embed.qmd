@@ -1,0 +1,57 @@
+---
+title: "Ejercicio embed"
+author: "Capacitación presentaciones quarto"
+format:
+  beamer:
+    code-line-numbers: true
+    include-in-header: styles/template.tex
+    code-overflow: wrap
+    incremental: true
+---
+
+
+## Tabulado
+
+Tabulado para las preferencias de tipo de gobierno de los jóvenes según zona urbana y rural:
+
+```{r}
+#| message: false
+#| echo: false
+#| label: tipo_gob
+
+library(dplyr)
+
+Tabla_tipo_gob <- readxl::read_excel("example_embed/data/Tablas capacitación INE.xlsx", 
+                                     sheet = "Preferencia tipo de gob segment",
+                                     range = "A3:I7")
+
+Tabla_tipo_gob <- Tabla_tipo_gob %>% 
+  rename(Pregunta = `...1`) 
+
+Tabla_tipo_gob %>% 
+  select(Pregunta, Urbano, Rural) %>% 
+  kableExtra::kbl() %>% 
+  kableExtra::kable_styling(font_size = 6) 
+
+```
+
+
+## Diseño de muestra
+
+Veamos como se declaró el diseño:
+
+{{< embed example_embed/estimaciones.qmd#declaracion-disenio echo=true >}}
+
+
+## Estimación interes en política
+
+Porcentaje de jóvenes que están interesados o muy interesados en la política según región
+
+{{< embed example_embed/estimaciones_solucion.qmd#plot-interes-politica-region >}}
+
+## Estimación declaración jóvenes
+
+Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier otra forma de gobierno" según rango etario
+
+{{< embed example_embed/estimaciones_solucion.qmd#plot-democracia-rango-edad >}}
+

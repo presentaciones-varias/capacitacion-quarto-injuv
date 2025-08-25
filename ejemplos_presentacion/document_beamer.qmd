@@ -8,6 +8,7 @@ format:
     code-line-numbers: true
     include-in-header: styles/template.tex
     code-overflow: wrap
+    incremental: true
     # keep-tex: true
 ---
 
@@ -52,4 +53,8 @@ ggplot(airquality, aes(temp_celsius, Ozone)) +
 
 ![Un elefante](images/elephant.png){fig-alt="Un elefante."}
 
+## Capítulo 1 | Sección 2
+
+- parrafo 1
+- parrafo 2
 

@@ -85,3 +85,4 @@ head(airquality)
 ## Capítulo 1 | Sección 3
 
 ![Un elefante](images/elephant.png){fig-alt="Un elefante."}
+
