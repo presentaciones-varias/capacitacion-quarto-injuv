@@ -48,8 +48,6 @@ code-annotations: below
 
 - Embeds
 
-- Dashboards
-
 - Extra
 
 :::
@@ -1273,8 +1271,21 @@ Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier
 
 
 
+## Para finalizar
 
-## Dashboards
+::: {.incremental .medium-par}   
+
+- Quarto nos permite crear diferentes tipos de documentos y es flexible 
+
+- Paciencia!! Estamos creando diapositivas de forma más "programática", es normal que al inicio tengamos muchos errores de tipeo
+
+:::
+
+. . .
+
+[¡Gracias!]{.center}
+
+## Extra | Dashboards
 
 ::: {.incremental .medium-par}
 - Quarto permite crear dashboards interactivos usando R, Python, Julia y Observable. 
@@ -1288,7 +1299,7 @@ Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier
 
 
 
-## Dashboards
+## Extra | Dashboards
 
 ::: {.r-stack fragment-index=0 .center}
 
@@ -1300,7 +1311,7 @@ Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier
 
 
 
-## Dashboards
+## Extra | Dashboards
 
 ::: {.medium-par}
 * Un dashboard consiste de varios componentes:
@@ -1311,7 +1322,7 @@ Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier
 
 
 
-## Dashboards
+## Extra | Dashboards
 
 ::: {.medium-par}
 - Un dashboard consiste de varios componentes:
@@ -1322,7 +1333,7 @@ Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier
 
 
 
-## Dashboards
+## Extra | Dashboards
 
 ::: {.medium-par}
 - Un dashboard consiste de varios componentes:
@@ -1333,7 +1344,7 @@ Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier
 
 
 
-## Dashboards
+## Extra | Dashboards
 
 ::: {.medium-par}
 - Un dashboard consiste de varios componentes:
@@ -1344,7 +1355,7 @@ Porcentaje de jóvenes que declaran que "La democracia es preferible a cualquier
 
 
 
-## Dashboards
+## Extra | Dashboards
 
 ::: {.medium-par .custom-code-1}
 
@@ -1451,21 +1462,6 @@ gapminder %>%
 8.  La segunda fila de la segunda página incluye dos bloques de código, que son automáticamente separados en dos tarjetas adyacentes.
 
 :::
-
-
-## Para finalizar
-
-::: {.incremental .medium-par}   
-
-- Quarto nos permite crear diferentes tipos de documentos y es flexible 
-
-- Paciencia!! puesto que estamos creando diapositivas de forma más "programática", es normal que al inicio tengamos muchos errores de tipeo
-
-:::
-
-. . .
-
-[¡Gracias!]{.center}
 
 ## Extra | Tabsets (output html) (1/2)
 
